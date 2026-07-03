@@ -1,9 +1,9 @@
-import {Link, useNavigate} from 'react-router-dom';
-import {useCart} from '../context/CartContext.jsx';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext.jsx';
 import { clearTokens, getAccessToken } from '../utils/auth.js';
 
 function Navbar() {
-    const {cartItems} = useCart();
+    const { cartItems } = useCart();
     const navigate = useNavigate();
 
     const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -15,38 +15,64 @@ function Navbar() {
     };
 
     return (
-        <nav className='bg-white shadow-mb px-6 flex justify-between items-center fixed w-full top-0 z-50'>
-            <Link to = '/' className='text-2xl font-bold text-gray-800'>
-                🛍️ NoviCart
-            </Link>
+        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-lg shadow-sm">
+            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
 
-            <div className='flex items-center gap-6'>
-                {/* Login/Signup or Logout */}
-                {!isLoggedIn ?(
-                    <>
-                        <Link to='/login' className='text-gray-800 hover:text-gray-600 font-medium'>
-                            Login
-                        </Link>
-                        <Link to='/signup' className='text-gray-800 hover:text-gray-600 font-medium'>
-                            Sign Up
-                        </Link>
-                    </>
-                ) : (
-                    <button onClick={handleLogout} className='text-gray-800 hover:text-gray-600 font-medium'>
-                        Logout
-                    </button>
-                )}
-                
+                {/* Logo */}
+                <Link
+                    to="/"
+                    className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-gray-900 transition hover:scale-105"
+                >
+                    <span className="text-3xl">🛍️</span>
+                    <span>NoviCart</span>
+                </Link>
+
+                {/* Navigation */}
+                <div className="flex items-center gap-6">
+
+                    {!isLoggedIn ? (
+                        <>
+                            <Link
+                                to="/login"
+                                className="rounded-lg px-4 py-2 font-medium text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                            >
+                                Login
+                            </Link>
+
+                            <Link
+                                to="/signup"
+                                className="rounded-lg bg-black px-5 py-2 font-medium text-white transition hover:bg-gray-800"
+                            >
+                                Sign Up
+                            </Link>
+                        </>
+                    ) : (
+                        <button
+                            onClick={handleLogout}
+                            className="rounded-lg border border-red-500 px-4 py-2 font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
+                        >
+                            Logout
+                        </button>
+                    )}
+
+                    {/* Cart */}
+                    <Link
+                        to="/cart"
+                        className="relative flex items-center gap-2 rounded-lg px-3 py-2 font-medium text-gray-700 transition hover:bg-gray-100 hover:text-black"
+                    >
+                        <span className="text-xl">🛒</span>
+
+                        <span>Cart</span>
+
+                        {cartCount > 0 && (
+                            <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs font-bold text-white shadow-md">
+                                {cartCount}
+                            </span>
+                        )}
+                    </Link>
+
+                </div>
             </div>
-
-            <Link to='/cart' className='relative text-gray-800 hover:text-gray-600 font-medium' >
-                🛒 Cart
-                {cartCount > 0 && (
-                    <span className='absolute -top-2 -right-3 bg-red-500 text-white text-xs font-bold rounded-full px-2'>
-                        {cartCount}
-                    </span>
-                )}
-            </Link>
         </nav>
     )
 }

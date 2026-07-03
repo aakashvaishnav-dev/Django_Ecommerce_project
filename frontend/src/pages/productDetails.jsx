@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
@@ -38,7 +39,7 @@ function ProductDetails() {
     }
 
     const handleAddToCart = () => {
-        if(!localStorage.getItem('access_token')){
+        if (!localStorage.getItem('access_token')) {
             window.location.href = '/login';
             return;
         }
@@ -46,40 +47,65 @@ function ProductDetails() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex justify-center items-center py-10">
-            <div className="bg-white shadow-lg rounded-2xl p-8 max-w-3xl w-full">
-                <div className="flex flex-col md:flex-row gap-8">
-                    <img
-                        src={`${product.image}`}
-                        alt={product.name}
-                        className="w-full md:w-1/2 h-auto object-cover rounded-lg"
-                    />
-                    <div className="text-3xl font-bold text-gray-800 mb-2">
-                        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <div className="min-h-screen bg-gray-50 py-24 px-4">
+            <div className="mx-auto max-w-7xl rounded-3xl bg-white shadow-xl overflow-hidden">
+
+                <div className="grid gap-10 p-8 md:grid-cols-2">
+
+                    {/* Product Image */}
+                    <div className="overflow-hidden rounded-2xl bg-gray-100">
+                        <img
+                            src={`${product.image}`}
+                            alt={product.name}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                        />
+                    </div>
+
+                    {/* Product Details */}
+                    <div className="flex flex-col justify-center">
+
+                        <span className="mb-3 inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+                            In Stock
+                        </span>
+
+                        <h1 className="text-4xl font-bold text-gray-900">
                             {product.name}
                         </h1>
-                        <p className="text-2xl font-semibold text-green-600 mb-6">
-                            ${product.price}
-                        </p>
-                        <button onClick={handleAddToCart} className="bg-blue-600 text-white px-6 py-2 rounded -lg hover:bg-blue-700 transition">
-                            Add to Cart 🛒
-                        </button>
 
-                        {/* Home Button */}
-                        <div className="mt-4">
-                            <a 
-                                href="/"
-                                className="text-blue-600 hover:underline"
+                        <p className="mt-4 text-3xl font-bold text-indigo-600">
+                            ${Number(product.price).toFixed(2)}
+                        </p>
+
+                        <p className="mt-6 text-gray-600 leading-relaxed">
+                            {product.description ||
+                                "Premium quality product with excellent build quality and fast delivery. Perfect for everyday use."}
+                        </p>
+
+                        {/* Buttons */}
+                        <div className="mt-8 flex flex-wrap gap-4">
+
+                            <button
+                                onClick={handleAddToCart}
+                                className="rounded-xl bg-black px-8 py-3 font-semibold text-white transition hover:bg-gray-800 active:scale-95"
                             >
-                                &larr; Back to Home 
-                            </a>
+                                🛒 Add to Cart
+                            </button>
+
+                            <Link
+                                to="/"
+                                className="rounded-xl border border-gray-300 px-8 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
+                            >
+                                ← Continue Shopping
+                            </Link>
+
                         </div>
 
                     </div>
+
                 </div>
 
             </div>
-
         </div>
     )
 }
